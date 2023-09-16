@@ -89,6 +89,7 @@ class PacMan {
         this.color = "Yellow";
         this.life = 3;
         this.rotation = 0;
+        this.score = 10
     }
 
     // Teikna PacMan með opinn munn
@@ -259,6 +260,13 @@ function startGame() {
 
         // Teikna öll Pellets
         drawPellets();
+
+        // Draw life counter in the middle of the screen
+        ctx.font = '20px Fira Code';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText(`Lives: ${pacman.life}`, canvas.width / 2, 25)
+        ctx.fillText(`Score: ${pacman.score}`, canvas.width / 2, 50)
 
         // Sækir næsta "frame" í animation
         window.requestAnimationFrame(render);
