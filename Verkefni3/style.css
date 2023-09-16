@@ -1,6 +1,6 @@
 /*
 Tiago Miguel Martins Foutinho
-Skilaverkefni 2 
+Skilaverkefni 3 
 */
 
 html, body {
@@ -10,7 +10,7 @@ html, body {
 }
   
 html {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Fira Code';
   height: 100%;
 }
 
