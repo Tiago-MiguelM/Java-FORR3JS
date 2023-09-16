@@ -1,4 +1,4 @@
-  // Tiago Miguel Martins Foutinho
+// Tiago Miguel Martins Foutinho
 // Skilaverkefni 2
 
 "use strict";
