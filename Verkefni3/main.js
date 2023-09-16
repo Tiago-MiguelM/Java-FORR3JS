@@ -3,9 +3,32 @@
 
 "use strict";
 
+// ------------------ Constants ------------------ //
+
+const PELLET_RADIUS = 20;
+const GHOST_COLORS = ["Cyan", "Red", "Pink", "Orange"];
+
+// ------------------ Global Breytur ------------------ //
+
 // Setja upp canvas
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
+
+// Breytur fyrir lyklaborðsatriði
+let leftPressed = false;
+let rightPressed = false;
+let upPressed = false;
+let downPressed = false;
+
+// Upphafshnit fyrir PacMan
+let initialPacManX = canvas.width / 2;
+let initialPacManY = canvas.height / 2;
+
+// Flagga fyrir sýnileika á Power Pellets
+let showPellet = true;
+
+// ------------------ Utility Functions ------------------ //
+
 
 // Laga stærð á canvasi eftir gluggastærð
 function resizeCanvas() {
@@ -29,50 +52,7 @@ function resizeCanvas() {
   }
 }
 
-// Breytur fyrir lyklaborðsatriði
-let leftPressed = false;
-let rightPressed = false;
-let upPressed = false;
-let downPressed = false;
-
-// Upphafshnit fyrir PacMan
-let initialPacManX = canvas.width / 2;
-let initialPacManY = canvas.height / 2;
-
-// Flagga fyrir sýnileika á Power Pellets
-let showPellet = true;
-
-// Kveikir eða slekkur á Power Pellets á hverri sekúndu
-setInterval(() => {
-    showPellet = !showPellet;
-}, 1000);
-
-
-// Event listener fyrir ýmis lykilatriði
-window.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowLeft") {
-    leftPressed = true;
-  } else if (event.key === "ArrowRight") {
-    rightPressed = true;
-  } else if (event.key === "ArrowUp") {
-    upPressed = true;
-  } else if (event.key === "ArrowDown") {
-    downPressed = true;
-  }
-});
-
-window.addEventListener("keyup", (event) => {
-    if (event.key === "ArrowLeft") {
-      leftPressed = false;
-    } else if (event.key === "ArrowRight") {
-      rightPressed = false;
-    } else if (event.key === "ArrowUp") {
-      upPressed = false;
-    } else if (event.key === "ArrowDown") {
-      downPressed = false;
-    }
-  });
-
+// ------------------ Classes ------------------ //
 
 // Power Pellets klassi
 class PowerPellets {
@@ -219,12 +199,15 @@ class Ghost{
     
 }
 
+// ------------------ Main Functions ------------------ //
+
+
 // Bý til 4 Pellets, hver á sitthvort horn á skjáinn
 let Pellets = [
-  new PowerPellets(70, 70, 20), // Top-left corner
-  new PowerPellets(canvas.width - 70, 70, 20), // Top-right corner
-  new PowerPellets(50, canvas.height - 70, 20), // Bottom-left corner
-  new PowerPellets(canvas.width - 70, canvas.height - 70, 20) // Bottom-right corner
+  new PowerPellets(70, 70, PELLET_RADIUS), // Top-left corner
+  new PowerPellets(canvas.width - 70, 70, PELLET_RADIUS), // Top-right corner
+  new PowerPellets(50, canvas.height - 70, PELLET_RADIUS), // Bottom-left corner
+  new PowerPellets(canvas.width - 70, canvas.height - 70, PELLET_RADIUS) // Bottom-right corner
 ];
 
 function startGame() {
@@ -233,10 +216,10 @@ function startGame() {
 
     // Bý til fylki með 4 ghosts
     let ghosts = [
-        new Ghost("Cyan"),
-        new Ghost("Red"),
-        new Ghost("Pink"),
-        new Ghost("Orange")
+        new Ghost(GHOST_COLORS[0]),
+        new Ghost(GHOST_COLORS[1]),
+        new Ghost(GHOST_COLORS[2]),
+        new Ghost(GHOST_COLORS[3])
     ];
 
     // Fall sem teiknar alla draugana
@@ -287,11 +270,45 @@ function startGame() {
     window.addEventListener('resize', resizeCanvas);
 
 }
+
+// ------------------ Event Listeners ------------------ //
+
+// Event listener fyrir ýmis lykilatriði
+window.addEventListener("keydown", (event) => {
+if (event.key === "ArrowLeft") {
+  leftPressed = true;
+} else if (event.key === "ArrowRight") {
+  rightPressed = true;
+} else if (event.key === "ArrowUp") {
+  upPressed = true;
+} else if (event.key === "ArrowDown") {
+  downPressed = true;
+}
+});
+
+window.addEventListener("keyup", (event) => {
+  if (event.key === "ArrowLeft") {
+    leftPressed = false;
+  } else if (event.key === "ArrowRight") {
+    rightPressed = false;
+  } else if (event.key === "ArrowUp") {
+    upPressed = false;
+  } else if (event.key === "ArrowDown") {
+    downPressed = false;
+  }
+});
+
+// ------------------ Automatic Code ------------------ //
+
 // Uppfærir stærð og staðsetningu þegar síðan hlaðast
 resizeCanvas();
 
 // Ræsir leikinn þegar vafri hefur lokið að hlaða síðunni
-addEventListener("load", (event) => {});
-onload = (event) => {
+addEventListener("load", (event) => {
   startGame();
-} 
+});
+
+// Kveikir eða slekkur á Power Pellets á hverri sekúndu
+setInterval(() => {
+  showPellet = !showPellet;
+}, 1000);
