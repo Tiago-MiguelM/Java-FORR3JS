@@ -1,4 +1,4 @@
-// Tiago Miguel Martins Foutinho
+  // Tiago Miguel Martins Foutinho
 // Skilaverkefni 2
 
 "use strict";
@@ -7,15 +7,17 @@
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
 
-// Stilla canvas til þess að passa við gluggamálin
+// Laga stærð á canvasi eftir gluggastærð
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   
+  // Reikna út upphafsstaðsetningu fyrir PacMan
   initialPacManX = canvas.width / 2;
   initialPacManY = canvas.height / 2;
   
-  if (Pellets && Pellets.length === 4) { // Make sure Pellets array exists and has 4 elements
+  // Uppfæra staðsetningar á öllum Power Pellets
+  if (Pellets && Pellets.length === 4) {
     Pellets[0].x = 70;
     Pellets[0].y = 70;
     Pellets[1].x = canvas.width - 70;
@@ -27,18 +29,26 @@ function resizeCanvas() {
   }
 }
 
-// Breytur til að vita hvort takinn sé niðri
+// Breytur fyrir lyklaborðsatriði
 let leftPressed = false;
 let rightPressed = false;
 let upPressed = false;
 let downPressed = false;
 
-// Reikna stöðu pacmans til að byrja í miðjuna
+// Upphafshnit fyrir PacMan
 let initialPacManX = canvas.width / 2;
 let initialPacManY = canvas.height / 2;
 
+// Flagga fyrir sýnileika á Power Pellets
+let showPellet = true;
 
-// Even sem athugar fyrir Keydown trigger
+// Kveikir eða slekkur á Power Pellets á hverri sekúndu
+setInterval(() => {
+    showPellet = !showPellet;
+}, 1000);
+
+
+// Event listener fyrir ýmis lykilatriði
 window.addEventListener("keydown", (event) => {
   if (event.key === "ArrowLeft") {
     leftPressed = true;
@@ -51,7 +61,6 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-// Even sem athugar fyrir Keyup trigger
 window.addEventListener("keyup", (event) => {
     if (event.key === "ArrowLeft") {
       leftPressed = false;
@@ -68,7 +77,7 @@ window.addEventListener("keyup", (event) => {
 // Power Pellets klassi
 class PowerPellets {
     // Smiður sem inniheldur allar upplýsingar fyrir Power Pellets
-    constructor(x, y, radius,) {
+    constructor(x, y, radius) {
         this.x = x;
         this.y = y;
         this.radius = radius;
@@ -77,11 +86,13 @@ class PowerPellets {
 
     // Teikna gulan power pellet
     draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-        ctx.closePath();
-        ctx.fillStyle = this.color
-        ctx.fill();
+      if (showPellet) {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+          ctx.closePath();
+          ctx.fillStyle = this.color
+          ctx.fill();
+        }
     }
 };
 
@@ -97,11 +108,12 @@ class PacMan {
         this.angle = Math.PI / 4;
         this.color = "Yellow";
         this.life = 3;
-        this.rotation = 0; // New property for rotation angle
+        this.rotation = 0;
     }
 
     // Teikna PacMan með opinn munn
     draw() {
+      
       ctx.save(); // Vista State áður en hann breytist
 
       // Reikna breytu gráður áður enn hann hreyfist 
@@ -138,7 +150,7 @@ class PacMan {
       ctx.beginPath();
       ctx.arc(eyeX, eyeY, eyeRadius, 0, Math.PI * 2);
       ctx.closePath();
-      ctx.fillStyle = "black"; // Auga litur
+      ctx.fillStyle = "black";
       ctx.fill();
 
       ctx.restore(); // breyta aftur í upphaf state
@@ -174,11 +186,11 @@ class Ghost{
     // Smiður sem inniheldur allar upplýsingar fyrir Ghost
     constructor(color) {
         this.radius = 30;
-        this.x = Math.random() * (canvas.width - this.radius * 2) + this.radius; // Random x coordinate
-        this.y = Math.random() * (canvas.height - this.radius * 2) + this.radius; // Random y coordinate
+        this.x = Math.random() * (canvas.width - this.radius * 2) + this.radius;
+        this.y = Math.random() * (canvas.height - this.radius * 2) + this.radius;
         this.color = color;
-        this.velX = Math.random() * 8 - 4; // Random X velocity between -4 and 4
-        this.velY = Math.random() * 8 - 4; // Random Y velocity between -4 and 4
+        this.velX = Math.random() * 8 - 4;
+        this.velY = Math.random() * 8 - 4;
     }
 
     // Teikna Ghost
@@ -203,6 +215,8 @@ class Ghost{
             this.velY *= -1; // Breytir um átt við áresktur á toppnum eða gólfinu
         }
     }
+
+    
 }
 
 // Bý til 4 Pellets, hver á sitthvort horn á skjáinn
@@ -217,7 +231,7 @@ function startGame() {
     // Bý til PacMan og teikna hann með miðju canvas sem upphafsstað
     let pacman = new PacMan(initialPacManX, initialPacManY);
 
-    // Bý til array með 4 ghosts
+    // Bý til fylki með 4 ghosts
     let ghosts = [
         new Ghost("Cyan"),
         new Ghost("Red"),
@@ -225,22 +239,15 @@ function startGame() {
         new Ghost("Orange")
     ];
 
-    // Aðgerð til að teikna alla drauga
+    // Fall sem teiknar alla draugana
     function drawGhosts() {
         for (const ghost of ghosts) {
             ghost.draw() // Teikna Ghosts
             ghost.update(); // Uppfæra staðsetningu á Ghosts
         }
     }
-
-    // // Bý til 4 Pellets, hver á sitthvort horn á skjáinn
-    // let Pellets = [
-    //     new PowerPellets(70, 70, 20), // Top-left corner
-    //     new PowerPellets(canvas.width - 70, 70, 20), // Top-right corner
-    //     new PowerPellets(50, canvas.height - 70, 20), // Bottom-left corner
-    //     new PowerPellets(canvas.width - 70, canvas.height - 70, 20) // Bottom-right corner
-    // ];
-
+    
+    // Endurstillir staðsetningu á Pellets, gagnlegt ef canvas breytist
     Pellets = [
       new PowerPellets(70, 70, 20),
       new PowerPellets(canvas.width - 70, 70, 20),
@@ -248,14 +255,14 @@ function startGame() {
       new PowerPellets(canvas.width - 70, canvas.height - 70, 20)
     ];
 
-    // Aðgerð til að teikna alla Pellets
+    // Fall sem teiknar alla pellets
     function drawPellets() {
         for (const pellet of Pellets) {
-            pellet.draw()
+            pellet.draw() // Teiknar pellet 
         }
     }
 
-    // Aðgerð til að gera leiklykkjuna
+    // Leiklykkja sem uppfærir og teiknar allt í hvert sinn
     function render(timestamp) {
         // Hreinsa Canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -270,18 +277,20 @@ function startGame() {
         // Teikna öll Pellets
         drawPellets();
 
-        // Biðja um næsta animation frame
+        // Sækir næsta "frame" í animation
         window.requestAnimationFrame(render);
     }
-    // Byrja hreyfilykkjuna með því að kalla á fyrsta frame-ið.
+    // Ræsir leiklykkjuna með því að kalla á fyrsta "frame"-ið
     window.requestAnimationFrame(render);
-    window.addEventListener('resize', resizeCanvas);
-    // At the end of your existing code
-    resizeCanvas(); // This sets the initial sizes and positions
 
+    // Bætir við event listener fyrir resize atburð
+    window.addEventListener('resize', resizeCanvas);
 
 }
+// Uppfærir stærð og staðsetningu þegar síðan hlaðast
+resizeCanvas();
 
+// Ræsir leikinn þegar vafri hefur lokið að hlaða síðunni
 addEventListener("load", (event) => {});
 onload = (event) => {
   startGame();
