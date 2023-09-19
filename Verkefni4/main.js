@@ -1,5 +1,5 @@
 // Tiago Miguel Martins Foutinho
-// Skilaverkefni 3
+// Skilaverkefni 4
 
 "use strict";
 
