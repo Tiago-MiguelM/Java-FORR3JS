@@ -1,0 +1,25 @@
+/*
+Tiago Miguel Martins Foutinho
+Skilaverkefni 4 
+*/
+
+html, body {
+  margin: 0;
+  background-color: rgb(39, 39, 39);
+  overflow: hidden;
+}
+  
+html {
+  font-family: 'Fira Code';
+  height: 100%;
+}
+
+.overlay-text {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: darkgray; /* Text color */
+  padding: 10px;
+}
