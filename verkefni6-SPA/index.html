@@ -1,1 +1,60 @@
+<!-- 
+Tiago Miguel Martins Foutinho
+Skilaverkefni 6 
+-->
 
+
+<!DOCTYPE html>
+<html lang="is">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Verkefni 6</title>
+    <title>Verkefni 6</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h3> <center> Verkefni 6 - SPA</center></h3>
+    </header>
+
+    <main>
+        <div id="controlsContainer">
+            <div id="sortContainer">
+                <select id="sortOptions">
+                    <option value="">Select sort order</option> <!-- No sorting by default -->
+                    <option value="priceAsc">Price: Low to High</option>
+                    <option value="date">Most Recent</option>
+                </select>   
+            </div>
+        
+            <div id="searchContainer">
+                <input type="text" id="searchInput" placeholder="Search for events..." />
+            </div>
+        
+            <div id="sliderContainer">
+                <div id="sliderMinMax">
+                    <span id="minValue"></span> <!-- Min value label -->
+                    <input type="range" id="priceRange" min="0" max="10000" step="1000" oninput="updatePriceRangeLabel(this.value);">
+                    <span id="maxValue"></span> <!-- Max value label -->
+                </div>
+                <div id="currentValueContainer">
+                    <span id="currentValueLabel"></span>
+                </div>
+            </div>
+        </div>        
+        
+        <div id="itemContainer">
+            <!-- Items will be displayed here -->
+        </div>
+    </main>
+
+    <footer>
+        <p>Tiago Miguel Martins Foutinho - Verkefni 6 FORR3JS05DU</p>
+        <p>Copyright © 2023 - All Rights Reserved</p>
+    </footer>
+
+    <script src="main.js "></script>
+
+</body>
+</html>
